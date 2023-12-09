@@ -1,6 +1,6 @@
 import { parse } from "node-html-parser";
 
-let imageUrl = [];
+let imageUrl = new Set();
 
     async function getHtml(url) {
         let response = await fetch(url);
@@ -22,7 +22,7 @@ let imageUrl = [];
         // console.log(loop);
         for (let i = 0; i < urlLoop.length; i++) {
             let urls = urlLoop[i].getAttribute("src");
-            imageUrl.push(urls)
+            imageUrl.add(urls)
         }
 
         return imageUrl;

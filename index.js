@@ -18,9 +18,9 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith('feed')){
         try {
             const imageUrl = await run();
-            imageUrl.map((item) => {
+            imageUrl.forEach((item) => {
                 message.reply({
-                    content: `Generating Short ID for ${item}`,
+                    content: item
                 });
             })
         } catch (error) {
