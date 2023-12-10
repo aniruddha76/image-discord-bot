@@ -4,25 +4,25 @@ dotenv.config();
 
 import run from "./images.js";
 
-const client = new Client({ 
+const client = new Client({
     intents: [
-        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent
-    ] 
+    ]
 });
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
-    if (message.content.startsWith('feed')){
+    if (message.content.startsWith('feed')) {
         try {
-            const imageUrl = await run();
-            imageUrl.forEach((item) => {
-                message.reply({
-                    content: item
-                });
-            })
+                const imagesToSend = await run();
+                imagesToSend.forEach(async (item) => {
+                    message.reply({
+                        content: item
+                    })
+                })
         } catch (error) {
             console.error('Error fetching image:', error);
             message.reply({
@@ -30,10 +30,10 @@ client.on('messageCreate', async (message) => {
             });
         }
     } else {
-        message.reply({
-            content: 'Hi From bot',
-        });
-    }
+    message.reply({
+        content: 'Hi From bot',
+    });
+}
 });
 
 client.on('interactionCreate', interaction => {
