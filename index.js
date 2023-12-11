@@ -20,8 +20,12 @@ client.on('messageCreate', async (message) => {
 
     if (message.content.toLowerCase().startsWith('feed')) {
         try {
-            let userWant = message.content.split(" ")[1];
-            const imagesToSend = await run(userWant);
+            let name = message.content.split(" ")[1];
+            let lastName = message.content.split(" ")[2];
+            
+            // let nameOfCeleb = name.split("")[0] + "/" + name + lastName;
+
+            const imagesToSend = await run(name + " " + lastName);  
 
             let userId = message.author.id;
 
@@ -34,7 +38,7 @@ client.on('messageCreate', async (message) => {
                     content: item
                 });
 
-                await delay(10000)
+                await delay(3000)
             }
             sendingQueue.delete(userId);
 
@@ -57,7 +61,6 @@ client.on('messageCreate', async (message) => {
 });
 
 client.on('interactionCreate', interaction => {
-    // console.log(interaction)
     interaction.reply("Pong!!")
 });
 

@@ -11,37 +11,50 @@ async function getHtml(url) {
 
 }
 
-async function run(userWant) {
+async function run(nameToSearch) {
+    let userWant = nameToSearch.toLowerCase(); 
+
+    let celebFirstName = userWant.split(" ")[0];
+    let celebLastName = userWant.split(" ")[1];
+    let celebName = celebFirstName.split("")[0] + "/" + celebFirstName + celebLastName;
+
     let imageUrl = new Set();
-    let feedName;
 
-    if(userWant === "teagan"){
-        feedName = "teagan-croft"
-    } else if(userWant === "billie"){
-        feedName = "billie-eilish"
-    }
-
-    let html = await getHtml(`https://pinterest.com/albert_12_12/${feedName}/`);
+    let html = await getHtml(``);
 
     let document = parse(html);
-    var images = document.querySelectorAll("img");
+    var images = document.querySelectorAll("a img");
 
-    await Promise.all(images.map(async (image) => {
-        let urls = image.getAttribute('src');
+    await Promise.all(images.map((image) => {
+        try{
+        let urls = image.parentNode.rawAttributes.href;
 
-        if (urls.split("/")[3].includes("x")) {
-            let modifiedUrl = urls.replace(urls.split("/")[3], "originals");
-            let response = fetch(modifiedUrl);
-            if ((await response).status === 200) {
-                imageUrl.add(modifiedUrl)
-            } else {
-                let modifiedUrl2 = modifiedUrl.replace(modifiedUrl.split(".")[3], "webp");
-                imageUrl.add(modifiedUrl2);
+        if(urls.includes(celebFirstName)){
+            if(urls.startsWith("https:") && !urls.endsWith(".html")){
+
+                imageUrl.add(urls)
+
+            } else if(!urls.startsWith("https:") && !urls.endsWith(".html")) {
+
+                let newUrl = "https:" + urls;
+                imageUrl.add(newUrl);
+
             }
         }
+    } catch (error) {}
+
+        // if (urls.split("/")[3].includes("x")) {
+        //     let modifiedUrl = urls.replace(urls.split("/")[3], "originals");
+        //     let response = fetch(modifiedUrl);
+        //     if ((await response).status === 200) {
+        //         imageUrl.add(modifiedUrl)
+        //     } else {
+        //         let modifiedUrl2 = modifiedUrl.replace(modifiedUrl.split(".")[3], "webp");
+        //         imageUrl.add(modifiedUrl2);
+        //     }
+        // }
     }));
 
-    // console.log(imageUrl);
     return imageUrl;
 }
 
