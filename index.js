@@ -22,13 +22,9 @@ client.on('messageCreate', async (message) => {
         try {
             let name = message.content.split(" ")[1];
             let lastName = message.content.split(" ")[2];
-            
-            // let nameOfCeleb = name.split("")[0] + "/" + name + lastName;
-
-            const imagesToSend = await run(name + " " + lastName);  
+            const imagesToSend = await run(name + " " + lastName);
 
             let userId = message.author.id;
-
             sendingQueue.set(userId, imagesToSend);
 
             for (const item of imagesToSend) {
@@ -61,7 +57,14 @@ client.on('messageCreate', async (message) => {
 });
 
 client.on('interactionCreate', interaction => {
-    interaction.reply("Pong!!")
+    let { commandName } = interaction
+
+    if (commandName == "ping"){
+        interaction.reply("Pong!!")
+    } else if (commandName == "link"){
+        let inviteLink = "https://discord.com/api/oauth2/authorize?client_id=1183025739474419823&permissions=8&scope=bot";
+        interaction.reply(`${inviteLink}`)
+    }
 });
 
 client.login(process.env.BOT_TOKEN)
