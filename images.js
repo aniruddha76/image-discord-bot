@@ -1,7 +1,5 @@
 import { parse } from "node-html-parser";
 
-let imageUrl = new Set();
-
 async function getHtml(url) {
     let response = await fetch(url);
     if (response.status == 200) {
@@ -13,8 +11,17 @@ async function getHtml(url) {
 
 }
 
-async function run() {
-    let html = await getHtml("https://pinterest.com/albert_12_12/teagan-croft/");
+async function run(userWant) {
+    let imageUrl = new Set();
+    let feedName;
+
+    if(userWant === "teagan"){
+        feedName = "teagan-croft"
+    } else if(userWant === "billie"){
+        feedName = "billie-eilish"
+    }
+
+    let html = await getHtml(`https://pinterest.com/albert_12_12/${feedName}/`);
 
     let document = parse(html);
     var images = document.querySelectorAll("img");
@@ -37,5 +44,5 @@ async function run() {
     // console.log(imageUrl);
     return imageUrl;
 }
-run()
+
 export default run;
