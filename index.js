@@ -12,6 +12,9 @@ const client = new Client({
     ]
 });
 
+import { setupCommands } from './commands.js';
+setupCommands(client);
+
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 const sendingQueue = new Map();
 

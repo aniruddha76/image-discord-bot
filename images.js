@@ -20,7 +20,7 @@ async function run(nameToSearch) {
 
     let imageUrl = new Set();
 
-    let html = await getHtml(``);
+    let html = await getHtml(`https://www.aznude.com/view/celeb/${celebName}.html`);
 
     let document = parse(html);
     var images = document.querySelectorAll("a img");

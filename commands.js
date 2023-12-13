@@ -12,7 +12,7 @@ const commands = [
     description: 'Get invite link'
   },
   {
-    name:'subscribe',
+    name: 'subscribe',
     description: 'subscribe a channel for feed',
     options: [
       {
@@ -27,12 +27,17 @@ const commands = [
 
 const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN);
 
-try {
-  console.log('Started refreshing application (/) commands.');
+async function setupCommands() {
 
-  await rest.put(Routes.applicationCommands(process.env.CLIENT_TOKEN), { body: commands });
+  try {
+    console.log('Started refreshing application (/) commands.');
 
-  console.log('Successfully reloaded application (/) commands.');
-} catch (error) {
-  console.error(error);
+    await rest.put(Routes.applicationCommands(process.env.CLIENT_TOKEN), { body: commands });
+
+    console.log('Successfully reloaded application (/) commands.');
+  } catch (error) {
+    console.error(error);
+  }
 }
+
+export { setupCommands };
