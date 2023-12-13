@@ -41,7 +41,7 @@ client.on('messageCreate', async (message) => {
                         content: item
                     });
 
-                    await delay(15000)
+                    await delay(13000)
                 }
                 sendingQueue.delete(userId);
 

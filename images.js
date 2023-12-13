@@ -20,12 +20,12 @@ async function run(nameToSearch) {
 
     let imageUrl = new Set();
 
-    let html = await getHtml(`https://www.aznude.com/view/celeb/${celebName}.html`);
+    let html = await getHtml(``);
 
     let document = parse(html);
     var images = document.querySelectorAll("a img");
 
-    await Promise.all(images.map((image) => {
+    await Promise.all(images.map(async (image) => {
         try{
         let urls = image.parentNode.rawAttributes.href;
 
@@ -39,6 +39,14 @@ async function run(nameToSearch) {
                 let newUrl = "https:" + urls;
                 imageUrl.add(newUrl);
 
+            } else if(!urls.startsWith("https:") && urls.endsWith(".html")){
+                let newUrl = "https://www.aznude.com" + urls;
+                let response = await getHtml(newUrl);
+                let document = parse(response);
+                let video = document.querySelectorAll('.videoButtons').filter(element => element._attrs.class === 'videoButtons');
+                let href = video.filter(element => element.rawAttrs)[2].parentNode.rawAttrs;
+                let newVidUrl = "https:" + href.split('"')[1];
+                imageUrl.add(newVidUrl)
             }
         }
     } catch (error) {}
