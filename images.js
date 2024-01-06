@@ -47,7 +47,7 @@ async function run(nameToSearch) {
 
                     let newUrl = "https:" + urls;
                     imageUrl.add(newUrl);
-
+                
                 } else if (!urls.startsWith("https:") && urls.endsWith(".html")) {
                     let newUrl = "" + urls;
                     let response = await getHtml(newUrl);
@@ -67,5 +67,4 @@ async function run(nameToSearch) {
 
     return imageUrl;
 }
-
 export default run;

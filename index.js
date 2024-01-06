@@ -46,19 +46,19 @@ client.on('messageCreate', async (message) => {
                 sendingQueue.delete(userId);
 
             } catch (error) {
-                console.error('Error fetching image:', error);
+                console.error('Error fetching images:', error);
                 message.reply({
-                    content: 'An error occurred while fetching the image.',
+                    content: 'An error occurred while fetching images.',
                 });
             }
         } else if (message.content.toLowerCase() === 'stop') {
             sendingQueue.delete(message.author.id);
             message.reply({
-                content: 'You Just stopped the feed.',
+                content: 'Stopping already? Alright.',
             });
-        } else {
+        } else if(message.content.includes('@1183025739474419823')){
             message.reply({
-                content: 'Hi From bot',
+                content: "Yes, I'm online and ready to feed!",
             });
         }
     }
