@@ -54,7 +54,7 @@ client.on('messageCreate', async (message) => {
         } else if (message.content.toLowerCase() === 'stop') {
             sendingQueue.delete(message.author.id);
             message.reply({
-                content: 'Done already? Alright.',
+                content: 'Celebrity quest stopped. Any more?.',
             });
         } else if(message.content.includes('@1183025739474419823')){
             message.reply({

@@ -30,8 +30,12 @@ async function run(nameToSearch) {
     let imageUrl = new Set();
 
     let html = await getHtml(``);
-
     let document = parse(html);
+
+    if(document.innerHTML.includes('page not found')){
+        imageUrl.add("Oops! It seems like the celebrity you're looking for is not found. Please double-check the spelling or try searching for another celebrity.")
+    }
+
     var images = document.querySelectorAll("a img");
 
     await Promise.all(images.map(async (image) => {
