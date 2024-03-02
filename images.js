@@ -29,7 +29,7 @@ async function run(nameToSearch) {
 
     let imageUrl = new Set();
 
-    let html = await getHtml(``);
+    let html = await getHtml(`https://www.aznude.com/view/celeb/${celebName}.html`);
     let document = parse(html);
 
     if(document.innerHTML.includes('page not found')){
@@ -53,7 +53,7 @@ async function run(nameToSearch) {
                     imageUrl.add(newUrl);
                 
                 } else if (!urls.startsWith("https:") && urls.endsWith(".html")) {
-                    let newUrl = "" + urls;
+                    let newUrl = "https://www.aznude.com" + urls;
                     let response = await getHtml(newUrl);
                     let document = parse(response);
                     let video = document.querySelectorAll('.videoButtons').filter(element => element._attrs.class === 'videoButtons');
