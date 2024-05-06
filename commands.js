@@ -23,6 +23,10 @@ const commands = [
       }
     ]
   },
+  {
+    name: 'unsubscribe',
+    description: 'unsubscribe the channel'
+  },
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN);

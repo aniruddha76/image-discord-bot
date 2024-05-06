@@ -56,7 +56,7 @@ client.on('messageCreate', async (message) => {
             message.reply({
                 content: 'Feed stopped. Any more?',
             });
-        } else if(message.content.includes('@1183025739474419823')){
+        } else if (message.content.includes('@1183025739474419823')) {
             message.reply({
                 content: "Yes, I'm online and ready to feed!",
             });
@@ -69,17 +69,28 @@ client.on('interactionCreate', interaction => {
 
     if (commandName == "ping") {
         interaction.reply("Pong!!")
+
     } else if (commandName == "link") {
         let inviteLink = "https://discord.com/api/oauth2/authorize?client_id=1183025739474419823&permissions=8&scope=bot";
         interaction.reply(`${inviteLink}`)
+
     } else if (commandName == 'subscribe') {
-        let getChannel = interaction.options.get('channel');
+        if (feedChannel == undefined) {
 
-        let option = getChannel.value;
-        feedChannel = option;
+            let getChannel = interaction.options.get('channel');
 
-        let channelname = getChannel.channel.name;
-        interaction.reply(`Successfully subscribed to: ${channelname}`)
+            let option = getChannel.value;
+            feedChannel = option;
+
+            interaction.reply(`Successfully subscribed to: ${"<#" + feedChannel + ">"}`);
+
+        } else {
+            interaction.reply(`Cannot subscribe more than one channel!!\nsubscribed channel: ${"<#" + feedChannel + ">"}`)
+        }
+
+    } else if (commandName == 'unsubscribe') {
+        interaction.reply(`Successfully unsubscribed: ${"<#" + feedChannel + ">"}`)
+        feedChannel = undefined;
     }
 });
 
