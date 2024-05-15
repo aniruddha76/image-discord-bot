@@ -31,21 +31,27 @@ client.on('messageCreate', async (message) => {
                 let name;
                 let lastName;
                 let extraName;
-                let imagesToSend;
-                let imagesToSend2;
+                let imagesToSend = [];
 
                 if(message.content.split(" ").length == 4) {
                     name = message.content.split(" ")[1];
                     lastName = message.content.split(" ")[2];
                     extraName = message.content.split(" ")[3]
-                    imagesToSend = await run(name + " " + lastName + " " + extraName);
-                    // imagesToSend = await getImages(name + " " + lastName + " " + extraName);
+                    imagesToSend = imagesToSend.concat(Array.from(await run(name + " " + lastName + " " + extraName)));
+                    imagesToSend = imagesToSend.concat(Array.from(await getImages(name + " " + lastName + " " + extraName)));
                 } else {
                     name = message.content.split(" ")[1];
                     lastName = message.content.split(" ")[2];
-                    imagesToSend = await run(name + " " + lastName);
-                    // imagesToSend2 = await getImages(name + " " + lastName)
+                    imagesToSend = imagesToSend.concat(Array.from(await run(name + " " + lastName)));
+                    imagesToSend = imagesToSend.concat(Array.from(await getImages(name + " " + lastName)));
                 }
+
+                function shuffleArray(array) {
+                array.sort(() => Math.random() - 0.5);
+                return array;
+                }
+
+                shuffleArray(imagesToSend);
 
                 let userId = message.author.id;
                 sendingQueue.set(userId, imagesToSend);

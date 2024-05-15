@@ -43,10 +43,6 @@ async function getImages(name){
     let res = await getHtml(url);
     let document = parse(res);
 
-    if(document.innerHTML.includes('page not found')){
-        imageUrl.add("Oops! It seems like the celebrity you're looking for is not found. Please double-check the spelling or try searching for another celebrity.")
-    }
-
     let images = document.querySelectorAll('img.attachment-large')
     images.forEach((img) => {
         let src = img.parentNode.rawAttrs
