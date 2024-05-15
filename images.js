@@ -23,9 +23,22 @@ async function shuffleArray (array) {
 async function run(nameToSearch) {
     let userWant = nameToSearch.toLowerCase();
 
-    let celebFirstName = userWant.split(" ")[0];
-    let celebLastName = userWant.split(" ")[1];
-    let celebName = celebFirstName.split("")[0] + "/" + celebFirstName + celebLastName;
+    let celebFirstName;
+    let celebLastName;
+    let celebExtraLastName;
+    let celebName;
+
+    if(nameToSearch.split(" ").length == 3) {
+        celebFirstName = userWant.split(" ")[0];
+        celebLastName = userWant.split(" ")[1];
+        celebExtraLastName = userWant.split(" ")[2]
+        celebName = celebFirstName.split("")[0] + "/" + celebFirstName + celebLastName + celebExtraLastName;
+    } else {
+        celebFirstName = userWant.split(" ")[0];
+        celebLastName = userWant.split(" ")[1];
+        celebName = celebFirstName.split("")[0] + "/" + celebFirstName + celebLastName;
+    }
+
 
     let imageUrl = new Set();
 
@@ -52,15 +65,16 @@ async function run(nameToSearch) {
                     let newUrl = "https:" + urls;
                     imageUrl.add(newUrl);
                 
-                } else if (!urls.startsWith("https:") && urls.endsWith(".html")) {
-                    let newUrl = "https://www.aznude.com" + urls;
-                    let response = await getHtml(newUrl);
-                    let document = parse(response);
-                    let video = document.querySelectorAll('.videoButtons').filter(element => element._attrs.class === 'videoButtons');
-                    let href = video.filter(element => element.rawAttrs)[2].parentNode.rawAttrs;
-                    let newVidUrl = "https:" + href.split('"')[1];
-                    imageUrl.add(newVidUrl)
-                }
+                } 
+                // else if (!urls.startsWith("https:") && urls.endsWith(".html")) {
+                //     let newUrl = "https://www.aznude.com" + urls;
+                //     let response = await getHtml(newUrl);
+                //     let document = parse(response);
+                //     let video = document.querySelectorAll('.videoButtons').filter(element => element._attrs.class === 'videoButtons');
+                //     let href = video.filter(element => element.rawAttrs)[2].parentNode.rawAttrs;
+                //     let newVidUrl = "https:" + href.split('"')[1];
+                //     imageUrl.add(newVidUrl)
+                // }
             }
         } catch (error) { }
     }));

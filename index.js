@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import run from "./images.js";
+import getImages from './images2.js'
 
 const client = new Client({
     intents: [
@@ -27,9 +28,24 @@ client.on('messageCreate', async (message) => {
 
         if (message.content.toLowerCase().startsWith('feed')) {
             try {
-                let name = message.content.split(" ")[1];
-                let lastName = message.content.split(" ")[2];
-                const imagesToSend = await run(name + " " + lastName);
+                let name;
+                let lastName;
+                let extraName;
+                let imagesToSend;
+                let imagesToSend2;
+
+                if(message.content.split(" ").length == 4) {
+                    name = message.content.split(" ")[1];
+                    lastName = message.content.split(" ")[2];
+                    extraName = message.content.split(" ")[3]
+                    imagesToSend = await run(name + " " + lastName + " " + extraName);
+                    // imagesToSend = await getImages(name + " " + lastName + " " + extraName);
+                } else {
+                    name = message.content.split(" ")[1];
+                    lastName = message.content.split(" ")[2];
+                    imagesToSend = await run(name + " " + lastName);
+                    // imagesToSend2 = await getImages(name + " " + lastName)
+                }
 
                 let userId = message.author.id;
                 sendingQueue.set(userId, imagesToSend);
