@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Options } from 'discord.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -18,11 +18,13 @@ setupCommands(client);
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 const sendingQueue = new Map();
+const feedChannels = new Map();
 
-let feedChannel;
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
+
+    const feedChannel = feedChannels.get(message.guild.id)
 
     if (message.channelId === feedChannel) {
 
@@ -97,22 +99,18 @@ client.on('interactionCreate', interaction => {
         interaction.reply(`${inviteLink}`)
 
     } else if (commandName == 'subscribe') {
-        if (feedChannel == undefined) {
-
-            let getChannel = interaction.options.get('channel');
-
-            let option = getChannel.value;
-            feedChannel = option;
-
-            interaction.reply(`Successfully subscribed to: ${"<#" + feedChannel + ">"}`);
-
+        if(feedChannels.has(interaction.guild.id)){
+            interaction.reply(`Cannot subscribe more than one channel!\nCurrent subscribed chammel: ${"<#" + feedChannels.get(interaction.guild.id) + ">"}`)
         } else {
-            interaction.reply(`Cannot subscribe more than one channel!!\nsubscribed channel: ${"<#" + feedChannel + ">"}`)
+            let getChannel = interaction.options.get('channel').value;
+            feedChannels.set(interaction.guild.id, getChannel)
+            interaction.reply(`Successfully subscribed to: ${"<#" + getChannel + ">"}`);
         }
 
     } else if (commandName == 'unsubscribe') {
-        interaction.reply(`Successfully unsubscribed: ${"<#" + feedChannel + ">"}`)
-        feedChannel = undefined;
+        interaction.reply(`Successfully unsubscribed to: ${"<#" + feedChannels.get(interaction.guild.id) + ">"}`)
+        feedChannels.delete(interaction.guild.id);
+
     }
 });
 
