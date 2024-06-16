@@ -4,6 +4,7 @@ dotenv.config();
 
 import run from "./images.js";
 import getImages from './images2.js'
+import getBollywoodImages from './images3.js';
 
 const client = new Client({
     intents: [
@@ -46,6 +47,7 @@ client.on('messageCreate', async (message) => {
                     lastName = message.content.split(" ")[2];
                     imagesToSend = imagesToSend.concat(Array.from(await run(name + " " + lastName)));
                     imagesToSend = imagesToSend.concat(Array.from(await getImages(name + " " + lastName)));
+                    imagesToSend = imagesToSend.concat(Array.from(await getBollywoodImages(name + " " + lastName)))
                 }
 
                 function shuffleArray(array) {
